@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "mi-servidor": {
+      "command": "node",
+      "args": ["mcp-server.js"],
+      "enabled": true
+    }
+  }
+}

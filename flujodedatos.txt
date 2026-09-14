@@ -1,0 +1,25 @@
+Usuario escribe → chat.js
+        ↓
+    ¿Empieza con "/"? ─── Sí ──→ commands.js → procesarComando() → respuesta directa
+        │
+        No
+        ↓
+    ¿Multiagente activo y tarea compleja? ─── Sí ──→ multiagent.js → POST /api/multiagent/coordinar
+        │
+        No
+        ↓
+    ¿Router simple detecta agente? ─── Sí ──→ POST /api/agentes/:agente/ejecutar
+        │
+        No
+        ↓
+    POST /api/chat/ ──→ routes/chat.js
+        ↓
+    ¿Shortcut? (fecha/hora/clima/despensa) → respuesta directa
+        │
+        No
+        ↓
+    ¿MCP activo y modelo soporta tools? → chatConTools → tool_calls → ejecutarToolMCP → respuesta
+        │
+        No
+        ↓
+    chatWithOllama normal → respuesta

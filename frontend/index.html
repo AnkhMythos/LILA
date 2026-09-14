@@ -1,0 +1,234 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧉 LILA - Node.js</title>
+    <link rel="stylesheet" href="estilos.css" />
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <span class="mate">🧉</span>
+            <h1>LILA Local Intelligence & Language Assistant</h1>
+            <div class="model-selector">
+                <label for="modelSelect">Modelo:</label>
+                <select id="modelSelect">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">☰</button>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+        </div>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-header">
+                <span>📋 Comandos</span>
+                <button class="close-btn" onclick="toggleMenu()">✕</button>
+            </div>
+            <div class="dropdown-section">
+                <div class="comandos-dropdown">
+                    <kbd onclick="insertCommand('/agentes')">/agentes</kbd>
+                    <kbd onclick="insertCommand('/archivos')">/archivos</kbd>
+                    <kbd onclick="insertCommand('/ayuda')">/ayuda</kbd>
+                    <kbd onclick="insertCommand('/borrar')">/borrar</kbd>
+                    <kbd onclick="insertCommand('/buscar ')">/buscar</kbd>
+                    <kbd onclick="insertCommand('/conectar')">/conectar</kbd>
+                    <kbd onclick="insertCommand('/coordinar ')">/coordinar</kbd>
+                    <kbd onclick="insertCommand('/dialogo')">/dialogo</kbd>
+                    <kbd onclick="insertCommand('/ejecutar ')">/ejecutar</kbd>
+                    <kbd onclick="insertCommand('/enviar ')">/enviar</kbd>
+                    <kbd onclick="insertCommand('/escuchar')">/escuchar</kbd>
+                    <kbd onclick="insertCommand('/exportar')">/exportar</kbd>
+                    <kbd onclick="insertCommand('/historial')">/historial</kbd>
+                    <kbd onclick="insertCommand('/historialma')">/historialma</kbd>
+                    <kbd onclick="document.getElementById('importInput').click()">/importar</kbd>
+                    <kbd onclick="insertCommand('/memoria')">/memoria</kbd>
+                    <kbd onclick="insertCommand('/modelo llama3.2:3b')">/modelo</kbd>
+                    <kbd onclick="insertCommand('/multiagente')">/multiagente</kbd>
+                    <kbd onclick="insertCommand('/noticias ')">/noticias</kbd>
+                    <kbd onclick="insertCommand('/olvidar ')">/olvidar</kbd>
+                    <kbd onclick="insertCommand('/olvidar todo')">/olvidar todo</kbd>
+                    <kbd onclick="insertCommand('/parescuchar')">/parescuchar</kbd>
+                    <kbd onclick="insertCommand('/python ')">/python</kbd>
+                    <kbd onclick="insertCommand('/recordar ')">/recordar</kbd>
+                    <kbd onclick="insertCommand('/temperatura 0.8')">/temperatura</kbd>
+                    <kbd onclick="insertCommand('/tono 0.8')">/tono</kbd>
+                    <kbd onclick="insertCommand('/tools')">/tools</kbd>
+                    <kbd onclick="insertCommand('/velocidad 1.2')">/velocidad</kbd>
+                    <kbd onclick="insertCommand('/version')">/version</kbd>
+                    <kbd onclick="insertCommand('/voces')">/voces</kbd>
+                    <kbd onclick="insertCommand('/volumen 0.9')">/volumen</kbd>
+                    <kbd onclick="insertCommand('/voz info')">/voz info</kbd>
+                    <kbd onclick="insertCommand('/voz off')">/voz off</kbd>
+                    <kbd onclick="insertCommand('/voz on')">/voz on</kbd>
+                    <kbd onclick="insertCommand('/wikipedia ')">/wikipedia</kbd>
+                    <kbd onclick="insertCommand('/wikidata ')">/wikidata</kbd>
+                    <kbd onclick="insertCommand('/yo')">/yo</kbd>
+                </div>
+            </div>
+            <div class="dropdown-section">
+                <div class="comandos-dropdown">
+                    <label for="fileInput">📎 Subir archivo</label>
+                    <input type="file" id="fileInput" accept=".txt,.md,.csv,.pdf" style="display:none;" multiple />
+                    <span id="fileInfo" class="file-info">Ningún archivo</span>
+                    <button class="clear-file" id="clearFileBtn" style="display:none;">✕ Quitar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages" id="messageContainer"></div>
+
+        <div id="typingIndicator" class="typing-indicator">
+            <span></span><span></span><span></span>
+            <span style="margin-left:6px;">Pensando...</span>
+        </div>
+
+        <div class="input-area">
+            <div class="input-row">
+                <textarea id="userInput" rows="1" placeholder="Escribí... (Ctrl+V pega imagen)"></textarea>
+                <button id="sendBtn">Enviar</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button class="footer-status offline" id="footerMcp" onclick="toggleMCP()" title="Activar/desactivar herramientas MCP">MCP</button>
+            <button class="footer-status offline" id="footerDialogo" onclick="toggleDialogo()" title="Activar/desactivar diálogo entre instancias">Diálogo</button>
+
+            <span class="storage-status" id="storageStatus">💾 0 msg</span>
+            <span id="ragStatus">📚 RAG: 0</span>
+            <span class="location-badge" id="locationBadge">📍 Desconocido</span>
+            <span class="instancia-status" id="instanciaStatus">📡 1 instancia</span>
+
+            <button class="footer-status offline" id="footerMultiagente" onclick="toggleMultiagente()" title="Modo multiagente">Multiagente</button>
+            <button class="footer-status online" id="footerBackend" onclick="toggleBackend()">Backend</button>
+            <button class="footer-status offline" id="footerWs" onclick="toggleWs()">WS</button>
+            <button class="footer-status offline" id="footerVoz" onclick="toggleVoz()">Voz</button>
+            <button class="footer-status offline" id="footerEscuchar" onclick="toggleEscucha()">Escuchar</button>
+        </div>
+    </div>
+
+    <input type="file" id="importInput" accept=".json" style="display:none;" />
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        }
+        function insertCommand(cmd) {
+            const input = document.getElementById('userInput');
+            if (!input) return;
+            input.value = cmd;
+            input.focus();
+            if (!cmd.endsWith(' ')) input.value += ' ';
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+        function toggleBackend() {
+            const btn = document.getElementById('footerBackend');
+            const isOn = btn.classList.contains('online');
+            if (isOn) {
+                btn.classList.remove('online'); btn.classList.add('offline');
+                if (typeof window._toggleBackend === 'function') window._toggleBackend(false);
+            } else {
+                btn.classList.remove('offline'); btn.classList.add('online');
+                if (typeof window._toggleBackend === 'function') window._toggleBackend(true);
+            }
+        }
+        function toggleWs() {
+            const btn = document.getElementById('footerWs');
+            const isOn = btn.classList.contains('online');
+            if (isOn) {
+                btn.classList.remove('online'); btn.classList.add('offline');
+                if (typeof ws !== 'undefined' && ws) ws.close();
+                if (typeof window._toggleWs === 'function') window._toggleWs(false);
+            } else {
+                btn.classList.remove('offline'); btn.classList.add('online');
+                if (typeof conectarWS === 'function') conectarWS();
+                if (typeof window._toggleWs === 'function') window._toggleWs(true);
+            }
+        }
+        function toggleVoz() {
+            const btn = document.getElementById('footerVoz');
+            const isOn = btn.classList.contains('online');
+            if (isOn) {
+                btn.classList.remove('online'); btn.classList.add('offline');
+                window.vozActivada = false;
+                if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
+                const mb = document.getElementById('btnVoz'); if (mb) mb.textContent = '🔊 Voz: OFF';
+            } else {
+                btn.classList.remove('offline'); btn.classList.add('online');
+                window.vozActivada = true;
+                const mb = document.getElementById('btnVoz'); if (mb) mb.textContent = '🔊 Voz: ON';
+            }
+        }
+        function toggleEscucha() {
+            const btn = document.getElementById('footerEscuchar');
+            const isOn = btn.classList.contains('online');
+            if (isOn) {
+                btn.classList.remove('online'); btn.classList.add('offline');
+                if (typeof detenerReconocimiento === 'function') detenerReconocimiento();
+                const mb = document.getElementById('btnEscuchar'); if (mb) mb.textContent = '🎙️ Escuchar: OFF';
+            } else {
+                btn.classList.remove('offline'); btn.classList.add('online');
+                if (typeof iniciarReconocimiento === 'function') iniciarReconocimiento();
+                const mb = document.getElementById('btnEscuchar'); if (mb) mb.textContent = '🎙️ Escuchar: ON';
+            }
+        }
+
+        window.actualizarBadgeModelo = function(nombre) {
+            const select = document.getElementById('modelSelect');
+            if (select && nombre && select.value !== nombre) {
+                const opt = Array.from(select.options).find(o => o.value === nombre);
+                if (opt) select.value = nombre;
+            }
+        };
+        window.actualizarStorageStatus = function(c) {
+            const e = document.getElementById('storageStatus'); if (e) e.textContent = '💾 ' + c + ' msg';
+        };
+        window.actualizarRagStatus = function(c) {
+            const e = document.getElementById('ragStatus'); if (e) e.textContent = '📚 RAG: ' + c;
+        };
+        window.actualizarUbicacion = function(u) {
+            const e = document.getElementById('locationBadge'); if (e) e.textContent = '📍 ' + u;
+        };
+        window.actualizarInstancias = function(c) {
+            const e = document.getElementById('instanciaStatus');
+            if (e) e.textContent = '📡 ' + c + ' instancia' + (c !== 1 ? 's' : '');
+        };
+        window.actualizarFooterBackend = function(estado) {
+            const b = document.getElementById('footerBackend');
+            if (!b) return;
+            b.classList.toggle('online', estado); b.classList.toggle('offline', !estado);
+        };
+        window.actualizarFooterWs = function(estado) {
+            const b = document.getElementById('footerWs');
+            if (!b) return;
+            b.classList.toggle('online', estado); b.classList.toggle('offline', !estado);
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.actualizarFooterVoz === 'function') {
+                window.actualizarFooterVoz(window.vozActivada);
+            }
+            if (typeof window.actualizarFooterEscuchar === 'function') {
+                window.actualizarFooterEscuchar(window.escuchando);
+            }
+        });
+    </script>
+
+    <script src="js/config.js"></script>
+    <script src="js/dom.js"></script>
+    <script src="js/speech.js"></script>
+    <script src="js/listener.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/websocket.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/memory.js"></script>
+    <script src="js/multiagent.js"></script>
+    <script src="js/mcp.js"></script>
+    <script src="js/commands.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

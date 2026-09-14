@@ -1,0 +1,33 @@
+Comandos implementados en commands.js
+Comando	Qué hace
+/ayuda, /help	Lista de comandos
+/voz on|off|info|<n>	Gestiona TTS
+/voces	Lista voces del sistema
+/velocidad, /tono, /volumen	Ajustes de voz
+/escuchar, /parescuchar	STT
+/modelo <n>	Cambia modelo
+/temperatura <0-1>	Ajusta creatividad
+/historial	Últimos 10 mensajes
+/borrar	Limpia historial
+/exportar, /importar	JSON de conversación
+/yo	Hechos recordados
+/version	Versión y estado
+/archivos	Archivos subidos
+/buscar <texto>	Búsqueda web
+/noticias [tema]	Últimas noticias
+/wikipedia <término>	Artículo Wikipedia
+/wikidata <término>	Entidad Wikidata
+/recordar <k>: <v>	Guarda hecho
+/olvidar <k>|todo	Borra hechos
+/memoria	Memoria del multiagente
+/historialma	Historial de coordinaciones
+/tools	Lista tools disponibles
+/multiagente	Toggle multiagente
+/coordinar <tarea>	Ejecuta multiagente
+/agentes	Lista agentes
+/ejecutar <a> <t>	Ejecuta agente puntual
+/mcp status|tools|call	Comandos MCP
+/python <código>	Ejecuta Python
+/dialogo	Toggle diálogo
+/conectar	Reconecta WS
+/enviar <mensaje>	Envía por WS

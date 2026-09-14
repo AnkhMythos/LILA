@@ -1,0 +1,33 @@
+Endpoint	Archivo	Qué hace
+GET /api/health	server.js	Estado básico
+GET /api/health/full	server.js	Estado de todos los subsistemas
+GET /api/models	server.js	Lista modelos de Ollama
+POST /api/router/	server.js	Orquestador simple
+POST /api/agentes/:agente/ejecutar	server.js	Ejecuta agente LLM o control-remoto
+GET /api/hardware/dispositivos	server.js	Lista USB
+POST /api/chat/	routes/chat.js	Chat normal + shortcuts + MCP
+POST /api/multiagent/coordinar	routes/multiagent.js	Multiagente
+GET /api/multiagent/agentes	routes/multiagent.js	Lista agentes
+GET /api/multiagent/memoria	routes/multiagent.js	Memoria compartida
+GET /api/multiagent/historial	routes/multiagent.js	Historial coordinaciones
+GET /api/multiagent/tools	routes/multiagent.js	Tools internas + MCP
+POST /api/multiagent/toggle	routes/multiagent.js	Activa/desactiva multiagente
+GET /api/mcp/status	routes/mcp.js	Estado MCP
+GET /api/mcp/tools	routes/mcp.js	Lista tools MCP
+POST /api/mcp/call	routes/mcp.js	Invoca tool MCP
+POST /api/mcp/toggle	routes/mcp.js	Activa/desactiva MCP
+GET /api/noticias/ultimas	routes/noticias.js	Últimas noticias
+GET /api/noticias/buscar?q=	routes/noticias.js	Busca noticias por tema
+POST /api/search/	routes/search.js	Búsqueda web DuckDuckGo
+GET /api/wikipedia/articulo?q=	routes/wikipedia.js	Artículo Wikipedia
+GET /api/wikipedia/wikidata?q=	routes/wikipedia.js	Entidad Wikidata
+POST /api/python/ejecutar	routes/python.js	Ejecuta código Python
+POST /api/rag/add	routes/rag.js	Indexa fragmento
+GET /api/rag/search?q=	routes/rag.js	Búsqueda full-text
+GET /api/rag/stats	routes/rag.js	Estadísticas RAG
+DELETE /api/rag/clear	routes/rag.js	Limpia índice
+GET /api/memory/:userId	routes/memory.js	Memoria del usuario
+POST /api/memory/:userId	routes/memory.js	Guarda hecho
+DELETE /api/memory/:userId/:clave	routes/memory.js	Borra clave
+DELETE /api/memory/:userId	routes/memory.js	Borra toda la memoria
+WS /api/instances/ws	server.js	WebSocket multi-instancia

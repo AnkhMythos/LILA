@@ -1,0 +1,37 @@
+LILA/
+├── backend/
+│   ├── package.json
+│   ├── .env.example
+│   ├── src/
+│   │   ├── server.js                 # Servidor principal (Express + WebSocket)
+│   │   ├── config.js                 # Variables de entorno
+│   │   ├── routes/
+│   │   │   ├── chat.js               # /api/chat
+│   │   │   ├── memory.js             # /api/memory
+│   │   │   ├── models.js             # /api/models
+│   │   │   ├── files.js              # /api/files/upload
+│   │   │   ├── search.js             # /api/search
+│   │   │   └── openworker.js         # /api/openworker
+│   │   ├── services/
+│   │   │   ├── ollama.js             # Cliente HTTP para Ollama
+│   │   │   ├── memoryStore.js        # Memoria en JSON o SQLite liviano
+│   │   │   ├── ragService.js         # RAG simple (opcional)
+│   │   │   └── websocket.js          # Manejo de WebSockets
+│   │   ├── agents/                   # DIRECTORIO DE AGENTES
+│   │   │   ├── index.js              # Registro de agentes
+│   │   │   ├── phaseone.js           # Agente PHASEONE
+│   │   │   ├── multiagent.js         # Coordinador multiagente
+│   │   │   └── openworkerAgent.js    # Agente OpenWorker
+│   │   └── utils/
+│   │       ├── logger.js             # Logging simple
+│   │       └── helpers.js
+│   └── package.json
+├── frontend/
+│   ├── index.html
+│   ├── estilos.css
+│   └── js/
+│       ├── config.js
+│       ├── main.js
+│       ├── chat.js
+│       └── openworker.js
+└── README.md
