@@ -1,1 +1,0 @@
-![LILA](LILA-comp.png)
